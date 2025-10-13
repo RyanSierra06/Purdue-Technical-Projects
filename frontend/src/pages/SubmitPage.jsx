@@ -92,7 +92,7 @@ export default function SubmitPage() {
                 submitData.append('image', formData.image);
             }
 
-            const response = await fetch('http://localhost:5000/api/projects', {
+            const response = await fetch('http://localhost:3001/api/projects', {
                 method: 'POST',
                 body: submitData
             });
@@ -100,7 +100,7 @@ export default function SubmitPage() {
             const result = await response.json();
 
             if (result.success) {
-                setSubmitMessage('Project submitted successfully! It will be reviewed before being featured.');
+                setSubmitMessage('Project successfully submitted for review! Check back in a couple days to see it featured.');
                 setFormData({
                     name: '',
                     description: '',

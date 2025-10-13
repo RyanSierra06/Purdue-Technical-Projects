@@ -15,7 +15,7 @@ export default function ProjectCard({ project }) {
             <div className="flex gap-6">
                 <div className="flex-shrink-0">
                     <img
-                        src={project.image}
+                        src={`http://localhost:3001/api/projects/${project._id}/image`}
                         alt={project.name}
                         className="w-80 h-80 object-contain rounded-lg bg-gray-800/50 p-2"
                         onError={(e) => {

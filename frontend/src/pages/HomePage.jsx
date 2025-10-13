@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ExternalLink, ChevronLeft, ChevronRight, Globe, Camera } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProjectCard from '../components/ProjectCard';
+import { getProjects } from '../services/api';
 
 export default function HomePage() {
     const [featuredProjects, setFeaturedProjects] = useState([]);
@@ -11,10 +12,9 @@ export default function HomePage() {
     useEffect(() => {
         const loadFeaturedProjects = async () => {
             try {
-                const res = await fetch('/data.json');
-                const data = await res.json();
-                // Get only featured projects
-                const featured = data.projects.filter(project => project.featured === 'true');
+                const projects = await getProjects();
+                        // Get only featured projects
+                        const featured = projects.filter(project => project.featured === true);
                 // Shuffle and take 3 random projects
                 const shuffled = featured.sort(() => 0.5 - Math.random());
                 setFeaturedProjects(shuffled.slice(0, 3));
