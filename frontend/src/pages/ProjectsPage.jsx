@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react";
 import { SearchIcon } from "lucide-react";
 import ProjectCard from "../components/ProjectCard";
 
+import { getProjects } from "../services/api";
+
 export default function ProjectsPage() {
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -11,10 +13,14 @@ export default function ProjectsPage() {
     useEffect(() => {
         const load = async () => {
             try {
-                const res = await fetch('/data.json');
-                const data = await res.json();
+                //const res = await fetch('/data.json');
+                //const data = await res.json();
+                console.log("calling api...");
+                const res = await getProjects();
+
                 // Only show featured projects
-                const featuredProjects = data.projects.filter(project => project.featured === 'true');
+                const featuredProjects = res.filter(project => project.featured === true);
+
                 setProjects(featuredProjects);
             } catch (_) {
                 setProjects([]);
