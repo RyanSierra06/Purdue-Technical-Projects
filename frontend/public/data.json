@@ -10,7 +10,7 @@
       "members": ["Patrick", "Squidward"],
       "links": "https://purdueusb.com/",
       "status": "completed",
-      "featured": "false",
+      "featured": "true",
       "created_at": "2025-10-13T00:00:00Z",
       "updated_at": "2025-10-13T00:00:00Z"
     },
