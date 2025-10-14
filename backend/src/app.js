@@ -26,21 +26,35 @@ app.use(compression({
 // CORS configuration - allow multiple origins
 const allowedOrigins = [
     'http://localhost:5173',  // Local development
-    'https://purdue-csusb.github.io',  // GitHub Pages
+    'https://purdue-csusb.github.io',  // GitHub Pages (without path)
+    'https://purdue-csusb.github.io/Purdue-Technical-Projects',  // GitHub Pages (with path)
     process.env.FRONTEND_URL  // Environment variable (if set)
 ].filter(Boolean);  // Remove undefined values
 
 app.use(cors({
     origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps, Postman, or curl)
-        if (!origin) return callback(null, true);
+        console.log('CORS request from origin:', origin);
         
-        if (allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            console.log('CORS blocked origin:', origin);
-            callback(new Error('Not allowed by CORS'));
+        // Allow requests with no origin (like mobile apps, Postman, or curl)
+        if (!origin) {
+            console.log('CORS: Allowing request with no origin');
+            return callback(null, true);
         }
+        
+        // Check exact match first
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            console.log('CORS: Allowing exact match for:', origin);
+            return callback(null, true);
+        }
+        
+        // Also allow GitHub Pages with any path
+        if (origin && origin.startsWith('https://purdue-csusb.github.io')) {
+            console.log('CORS: Allowing GitHub Pages origin:', origin);
+            return callback(null, true);
+        }
+        
+        console.log('CORS blocked origin:', origin);
+        callback(new Error('Not allowed by CORS'));
     },
     credentials: true
 }));
