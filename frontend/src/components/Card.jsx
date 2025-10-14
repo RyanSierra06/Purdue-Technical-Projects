@@ -7,7 +7,7 @@ export default function Card({ item }) {
             <div className="flex gap-6">
                 <div className="flex-shrink-0">
                     <img
-                        src={`/${item.image}`}
+                        src={`${import.meta.env.BASE_URL}${item.image}`}
                         alt={item.name}
                         className="w-48 h-48 object-contain rounded-lg bg-gray-800/50 p-2"
                         onError={(e) => {

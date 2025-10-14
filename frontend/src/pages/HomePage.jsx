@@ -92,7 +92,7 @@ export default function HomePage() {
                 <div className="text-center mb-16">
                     <div className="flex items-center justify-center mb-8">
                         <img 
-                            src="/PTP-Logo.png" 
+                            src={`${import.meta.env.BASE_URL}PTP-Logo.png`}
                             alt="Purdue Technical Projects Logo" 
                             className="w-20 h-20 mr-6 object-contain"
                         />

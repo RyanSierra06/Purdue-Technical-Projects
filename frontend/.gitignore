@@ -16,7 +16,7 @@ dist-ssr
 .env
 .env.local
 .env.development
-.env.production
+# .env.production - Allow this to be committed for GitHub Pages deployment
 
 # Editor directories and files
 .vscode/*

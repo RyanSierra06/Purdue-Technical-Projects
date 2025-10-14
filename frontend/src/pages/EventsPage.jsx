@@ -8,7 +8,7 @@ export default function EventsPage() {
     useEffect(() => {
         const load = async () => {
             try {
-                const res = await fetch('/Competitons.json');
+                const res = await fetch(`${import.meta.env.BASE_URL}Competitons.json`);
                 const data = await res.json();
                 setEvents(data.competitions || []);
                     } catch {

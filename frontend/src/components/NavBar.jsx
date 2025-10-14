@@ -24,7 +24,7 @@ export default function NavBar() {
                 <div className="flex items-center justify-between">
                     <Link to="/" className="flex items-center space-x-3" onClick={closeMenu}>
                         <img
-                            src="/PTP-Logo.png"
+                            src={`${import.meta.env.BASE_URL}PTP-Logo.png`}
                             alt="USB PTP Icon"
                             className="w-10 h-10 object-contain"
                             draggable={false}

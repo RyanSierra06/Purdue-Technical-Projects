@@ -9,7 +9,7 @@ export default function ClubsPage() {
     useEffect(() => {
         const load = async () => {
             try {
-                const res = await fetch('/Clubs.json');
+                const res = await fetch(`${import.meta.env.BASE_URL}Clubs.json`);
                 const data = await res.json();
                 setClubs(data.clubs || []);
                     } catch {

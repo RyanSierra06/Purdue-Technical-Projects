@@ -127,7 +127,7 @@ export default function SubmitPage() {
                 submitData.append('image', formData.image);
             }
 
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/projects`, {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api'}/projects`, {
                 method: 'POST',
                 body: submitData
             });

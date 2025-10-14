@@ -2,7 +2,8 @@
 .env
 .env.local
 .env.development
-.env.production
+# Allow frontend/.env.production for GitHub Pages deployment
+backend/.env.production
 .env.test
 
 # OS files
