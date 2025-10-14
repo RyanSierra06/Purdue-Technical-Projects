@@ -5,10 +5,10 @@ const connectDB = async () => {
         const conn = await mongoose.connect(process.env.MONGO_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            maxPoolSize: 10, // Maximum number of connections in the pool
-            minPoolSize: 2, // Minimum number of connections
-            serverSelectionTimeoutMS: 5000, // Timeout for selecting a server
-            socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+            maxPoolSize: 10,
+            minPoolSize: 2,
+            serverSelectionTimeoutMS: 5000,
+            socketTimeoutMS: 45000,
         });
         console.log(`💚 MongoDB Connected: ${conn.connection.host}`);
         console.log(`📂 Using database: ${conn.connection.name}`);

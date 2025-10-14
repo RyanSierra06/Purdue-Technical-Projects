@@ -106,14 +106,14 @@ export default function HomePage() {
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <a 
-                            href="/Projects" 
+                            href="/Purdue-Technical-Projects/Projects"
                             className="px-8 py-4 bg-black/60 hover:bg-black/80 border border-blue-500/30 hover:border-blue-400/60 text-blue-300 hover:text-blue-200 text-lg font-medium rounded-xl backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 inline-flex items-center justify-center group"
                         >
                             Explore Projects
                             <ExternalLink className="w-5 h-5 ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
                         </a>
                         <a
-                            href="/Submit" 
+                            href="Purdue-Technical-Projects//Submit"
                             className="px-8 py-4 bg-transparent border-2 border-blue-500/30 hover:border-blue-400/60 text-blue-300 hover:text-blue-200 text-lg font-medium rounded-xl backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 inline-flex items-center justify-center group"
                         >
                             <Plus className="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform duration-200" />

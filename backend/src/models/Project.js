@@ -64,10 +64,9 @@ const projectSchema = new mongoose.Schema(
   }
 );
 
-// Add indexes for faster queries
-projectSchema.index({ created_at: -1 }); // Index for sorting by creation date
-projectSchema.index({ featured: 1 }); // Index for filtering featured projects
-projectSchema.index({ category_id: 1 }); // Index for filtering by category
-projectSchema.index({ tags: 1 }); // Index for searching by tags
+projectSchema.index({ created_at: -1 });
+projectSchema.index({ featured: 1 });
+projectSchema.index({ category_id: 1 });
+projectSchema.index({ tags: 1 });
 
 export default mongoose.model('Project', projectSchema, 'projects');

@@ -1,15 +1,13 @@
 import axios from 'axios';
 
-// Use environment variable with fallback to localhost for development
 const API = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api',
-  timeout: 10000, // 10 second timeout
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Add response interceptor for better error handling
 API.interceptors.response.use(
   (response) => response,
   (error) => {

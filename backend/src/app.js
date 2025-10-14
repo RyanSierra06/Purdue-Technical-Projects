@@ -5,17 +5,14 @@ import compression from 'compression';
 
 import projectRoutes from './routes/projectRoutes.js';
 
-// Load environment variables
 dotenv.config();
 
 const app = express();
 
-// Compression middleware - compress all responses
 app.use(compression({
-    level: 6, // Compression level (0-9, 6 is default balance)
-    threshold: 1024, // Only compress responses larger than 1KB
+    level: 6,
+    threshold: 1024,
     filter: (req, res) => {
-        // Don't compress images (they're already compressed)
         if (req.path.includes('/image')) {
             return false;
         }
@@ -23,31 +20,27 @@ app.use(compression({
     }
 }));
 
-// CORS configuration - allow multiple origins
 const allowedOrigins = [
-    'http://localhost:5173',  // Local development
-    'https://purdue-csusb.github.io',  // GitHub Pages (without path)
-    'https://purdue-csusb.github.io/Purdue-Technical-Projects',  // GitHub Pages (with path)
-    process.env.FRONTEND_URL  // Environment variable (if set)
-].filter(Boolean);  // Remove undefined values
+    'http://localhost:5173',
+    'https://purdue-csusb.github.io',
+    'https://purdue-csusb.github.io/Purdue-Technical-Projects',
+    process.env.FRONTEND_URL
+].filter(Boolean);
 
 app.use(cors({
     origin: function (origin, callback) {
         console.log('CORS request from origin:', origin);
-        
-        // Allow requests with no origin (like mobile apps, Postman, or curl)
+
         if (!origin) {
             console.log('CORS: Allowing request with no origin');
             return callback(null, true);
         }
-        
-        // Check exact match first
+
         if (allowedOrigins.indexOf(origin) !== -1) {
             console.log('CORS: Allowing exact match for:', origin);
             return callback(null, true);
         }
-        
-        // Also allow GitHub Pages with any path
+
         if (origin && origin.startsWith('https://purdue-csusb.github.io')) {
             console.log('CORS: Allowing GitHub Pages origin:', origin);
             return callback(null, true);
@@ -62,10 +55,8 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Routes
 app.use('/api/projects', projectRoutes);
 
-// Health check endpoint
 app.get('/api/health', (req, res) => {
     res.json({ 
         status: 'OK', 
@@ -74,7 +65,6 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-// Error handler
 app.use((err, req, res, next) => {
     console.error('Error:', err);
     res.status(500).json({ 

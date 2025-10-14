@@ -4,16 +4,14 @@ import { getProjects, createProject, getProjectImage } from '../controllers/proj
 
 const router = express.Router();
 
-// Configure multer for memory storage (no local files)
 const storage = multer.memoryStorage();
 
 const upload = multer({ 
     storage: storage,
     limits: {
-        fileSize: 10 * 1024 * 1024 // 10MB limit
+        fileSize: 10 * 1024 * 1024
     },
     fileFilter: (req, file, cb) => {
-        // Accept only image files
         if (file.mimetype.startsWith('image/')) {
             cb(null, true);
         } else {
