@@ -18,6 +18,7 @@ export default function SubmitPage() {
     const [newMember, setNewMember] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitMessage, setSubmitMessage] = useState('');
+    const [isDragging, setIsDragging] = useState(false);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -34,6 +35,41 @@ export default function SubmitPage() {
                 ...prev,
                 image: file
             }));
+        }
+    };
+
+    const handleDragEnter = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(false);
+    };
+
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(false);
+
+        const files = e.dataTransfer.files;
+        if (files && files[0]) {
+            const file = files[0];
+            // Check if it's an image
+            if (file.type.startsWith('image/')) {
+                setFormData(prev => ({
+                    ...prev,
+                    image: file
+                }));
+            }
         }
     };
 
@@ -77,7 +113,6 @@ export default function SubmitPage() {
         setSubmitMessage('');
 
         try {
-            // Create FormData for file upload
             const submitData = new FormData();
             submitData.append('name', formData.name);
             submitData.append('description', formData.description);
@@ -92,7 +127,7 @@ export default function SubmitPage() {
                 submitData.append('image', formData.image);
             }
 
-            const response = await fetch('http://localhost:3001/api/projects', {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/projects`, {
                 method: 'POST',
                 body: submitData
             });
@@ -139,7 +174,6 @@ export default function SubmitPage() {
 
                 <div className="bg-black/40 rounded-lg p-8 border border-gray-700">
                     <form onSubmit={handleSubmit} className="space-y-8">
-                        {/* Project Name */}
                         <div>
                             <label className="block text-white text-lg font-medium mb-3">
                                 Project Name *
@@ -155,7 +189,6 @@ export default function SubmitPage() {
                             />
                         </div>
 
-                        {/* Project Description */}
                         <div>
                             <label className="block text-white text-lg font-medium mb-3">
                                 Project Description *
@@ -171,12 +204,21 @@ export default function SubmitPage() {
                             />
                         </div>
 
-                        {/* Image Upload */}
                         <div>
                             <label className="block text-white text-lg font-medium mb-3">
                                 Project Image *
                             </label>
-                            <div className="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center hover:border-blue-500 transition-colors">
+                            <div 
+                                className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
+                                    isDragging 
+                                        ? 'border-blue-500 bg-blue-500/10' 
+                                        : 'border-gray-600 hover:border-blue-500'
+                                }`}
+                                onDragEnter={handleDragEnter}
+                                onDragLeave={handleDragLeave}
+                                onDragOver={handleDragOver}
+                                onDrop={handleDrop}
+                            >
                                 <input
                                     type="file"
                                     accept="image/*"
@@ -188,7 +230,7 @@ export default function SubmitPage() {
                                 <label htmlFor="image-upload" className="cursor-pointer">
                                     <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                                     <p className="text-gray-300 mb-2">
-                                        {formData.image ? formData.image.name : 'Click to upload project image'}
+                                        {formData.image ? formData.image.name : 'Click to upload or drag and drop project image'}
                                     </p>
                                     <p className="text-sm text-gray-500">
                                         PNG, JPG, GIF up to 10MB
@@ -197,7 +239,6 @@ export default function SubmitPage() {
                             </div>
                         </div>
 
-                        {/* Project Category */}
                         <div>
                             <label className="block text-white text-lg font-medium mb-3">
                                 Project Category *
@@ -215,7 +256,7 @@ export default function SubmitPage() {
                                             value={option.value}
                                             checked={formData.category_id === option.value}
                                             onChange={handleInputChange}
-                                            className="mr-3"
+                                            className="mr-3 appearance-none w-4 h-4 border-2 border-gray-400 rounded-sm checked:bg-blue-500 checked:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 relative"
                                             required
                                         />
                                         <span className="text-white">{option.label}</span>
@@ -224,7 +265,6 @@ export default function SubmitPage() {
                             </div>
                         </div>
 
-                        {/* Tags */}
                         <div>
                             <label className="block text-white text-lg font-medium mb-3">
                                 Tags (Max 10) *
@@ -260,7 +300,11 @@ export default function SubmitPage() {
                                     type="button"
                                     onClick={addTag}
                                     disabled={!newTag.trim() || formData.tags.length >= 10}
-                                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                                    className={`px-4 py-2 bg-black/60 backdrop-blur-sm rounded-xl transition-all duration-300 flex items-center ${
+                                        newTag.trim() && formData.tags.length < 10
+                                            ? 'border-2 border-blue-500 text-blue-300 hover:bg-black/80 hover:border-blue-400 hover:text-blue-200 hover:shadow-lg hover:shadow-blue-500/20'
+                                            : 'border border-blue-500/30 text-blue-300/50 opacity-50 cursor-not-allowed'
+                                    }`}
                                 >
                                     <Plus className="w-4 h-4" />
                                 </button>
@@ -270,7 +314,6 @@ export default function SubmitPage() {
                             </p>
                         </div>
 
-                        {/* Members */}
                         <div>
                             <label className="block text-white text-lg font-medium mb-3">
                                 Team Members *
@@ -305,14 +348,20 @@ export default function SubmitPage() {
                                     type="button"
                                     onClick={addMember}
                                     disabled={!newMember.trim()}
-                                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                                    className={`px-4 py-2 bg-black/60 backdrop-blur-sm rounded-xl transition-all duration-300 flex items-center ${
+                                        newMember.trim()
+                                            ? 'border-2 border-blue-500 text-blue-300 hover:bg-black/80 hover:border-blue-400 hover:text-blue-200 hover:shadow-lg hover:shadow-blue-500/20'
+                                            : 'border border-blue-500/30 text-blue-300/50 opacity-50 cursor-not-allowed'
+                                    }`}
                                 >
                                     <Plus className="w-4 h-4" />
                                 </button>
                             </div>
+                            <p className="text-sm text-gray-400 mt-2">
+                                {formData.members.length} members
+                            </p>
                         </div>
 
-                        {/* Project Link */}
                         <div>
                             <label className="block text-white text-lg font-medium mb-3">
                                 Project Link *
@@ -331,7 +380,6 @@ export default function SubmitPage() {
                             </div>
                         </div>
 
-                        {/* Project Status */}
                         <div>
                             <label className="block text-white text-lg font-medium mb-3">
                                 Project Status *
@@ -348,7 +396,7 @@ export default function SubmitPage() {
                                             value={option.value}
                                             checked={formData.status === option.value}
                                             onChange={handleInputChange}
-                                            className="mr-3"
+                                            className="mr-3 appearance-none w-4 h-4 border-2 border-gray-400 rounded-sm checked:bg-blue-500 checked:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 relative"
                                             required
                                         />
                                         <span className="text-white">{option.label}</span>
@@ -357,18 +405,16 @@ export default function SubmitPage() {
                             </div>
                         </div>
 
-                        {/* Submit Button */}
                         <div className="pt-6">
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="w-full px-8 py-4 bg-blue-600 text-white text-lg font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                className="w-full px-8 py-4 bg-black/60 hover:bg-black/80 border border-blue-500/30 hover:border-blue-400/60 text-blue-300 hover:text-blue-200 text-lg font-medium rounded-xl backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-black/60 disabled:hover:border-blue-500/30 disabled:hover:text-blue-300 disabled:hover:shadow-none"
                             >
                                 {isSubmitting ? 'Submitting...' : 'Submit Project'}
                             </button>
                         </div>
 
-                        {/* Submit Message */}
                         {submitMessage && (
                             <div className={`p-4 rounded-lg ${
                                 submitMessage.includes('Error') 

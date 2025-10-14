@@ -12,7 +12,7 @@ export default function ClubsPage() {
                 const res = await fetch('/Clubs.json');
                 const data = await res.json();
                 setClubs(data.clubs || []);
-            } catch (_) {
+                    } catch {
                 setClubs([]);
             } finally {
                 setLoading(false);

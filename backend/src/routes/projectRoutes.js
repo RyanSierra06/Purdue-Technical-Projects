@@ -4,22 +4,36 @@ import { getProjects, createProject, getProjectImage } from '../controllers/proj
 
 const router = express.Router();
 
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/'); // Temporary upload directory
+// Configure multer for memory storage (no local files)
+const storage = multer.memoryStorage();
+
+const upload = multer({ 
+    storage: storage,
+    limits: {
+        fileSize: 10 * 1024 * 1024 // 10MB limit
     },
-    filename: (req, file, cb) => {
-        // Generate unique filename with timestamp
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + '-' + file.originalname);
+    fileFilter: (req, file, cb) => {
+        // Accept only image files
+        if (file.mimetype.startsWith('image/')) {
+            cb(null, true);
+        } else {
+            cb(new Error('Only image files are allowed'), false);
+        }
     }
 });
 
-const upload = multer({ storage: storage });
-
 router.get('/', getProjects);
-router.post('/', upload.single('image'), createProject);
+router.post('/', upload.single('image'), (err, req, res, next) => {
+    if (err instanceof multer.MulterError) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+            return res.status(400).json({ message: 'File too large. Maximum size is 10MB.' });
+        }
+        return res.status(400).json({ message: 'File upload error: ' + err.message });
+    } else if (err) {
+        return res.status(400).json({ message: err.message });
+    }
+    next();
+}, createProject);
 router.get('/:id/image', getProjectImage);
 
 export default router;

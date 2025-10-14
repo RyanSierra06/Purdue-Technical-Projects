@@ -8,9 +8,9 @@
     },
     {
       "name":"Boiler Classes",
-      "description": "This website was inspired by the team at GopherGrades (from the University of Minnesota), the team lead by Wade Fagen-Ulmschneider (from the University of Illinois), and Austin G. Walters. Fall 2021, Spring 2022, Summer 2022, and Fall 2022 data was provided by Joey Diesen. Spring 2023 data was provided by Vineet Malik. Summer 2023, Fall 2023, Spring 2024, and Fall 2024 data was provided by Umbert Caseres. Fall 2023 data was supplemented by Leon. Spring 2025 data was provided by Abdullah Alsadi and Abdullah Alkazemi.",
+      "description": "BoilerClasses\nis an unofficial catalog for Purdue courses made by Purdue students,\nbased in West Lafayette, Indiana. BoilerClasses is a simple Next.js app with a few Python helper files to format and organize the data. We use a Redis instance to store and rapidly query all our data.\n\nWe use Fly.io through Docker to host our app. More steps to run the Docker container through our Dockerfile can be found below.\n\n",
       "image": "club images/Boiler-Classes.png",
-      "links": "https://www.boilergrades.com/"
+      "links": "https://boilerclasses.com/"
     },
     {
       "name":"Boiler Bookings",

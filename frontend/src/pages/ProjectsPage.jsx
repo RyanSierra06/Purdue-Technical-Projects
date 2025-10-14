@@ -13,16 +13,11 @@ export default function ProjectsPage() {
     useEffect(() => {
         const load = async () => {
             try {
-                //const res = await fetch('/data.json');
-                //const data = await res.json();
-                console.log("calling api...");
                 const res = await getProjects();
-
-                // Only show featured projects
-                const featuredProjects = res.filter(project => project.featured === true);
-
-                setProjects(featuredProjects);
-            } catch (_) {
+                // Projects are already sorted by backend (newest first)
+                setProjects(res);
+            } catch (error) {
+                console.error("API Error:", error);
                 setProjects([]);
             } finally {
                 setLoading(false);
@@ -45,24 +40,21 @@ export default function ProjectsPage() {
     };
 
     const filteredProjects = projects.filter(project => {
+        // Only show featured projects
+        const featuredMatch = project.featured === true;
+        
         // Filter by category
         const categoryMatch = selectedCategory === 'all' || project.category_id === selectedCategory;
         
-        // Filter by search query (tags or description)
+        // Filter by search query (name, tags, or description)
         const searchMatch = searchQuery === '' || 
+            project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
             project.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
         
-        return categoryMatch && searchMatch;
+        return featuredMatch && categoryMatch && searchMatch;
     });
 
-    if (loading) {
-        return (
-            <div className="min-h-screen pt-20 flex items-center justify-center">
-                <div className="text-white text-xl">Loading projects...</div>
-            </div>
-        );
-    }
 
     return (
         <div className="min-h-screen pt-20">
@@ -77,8 +69,8 @@ export default function ProjectsPage() {
                     </p>
                     
                     <div className="max-w-lg mx-auto">
-                        <div className="relative">
-                            <SearchIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-300" />
+                        <div className="relative text-gray-300">
+                            <SearchIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5" />
                             <input
                                 type="text"
                                 placeholder="Search by tags or keywords..."
@@ -97,7 +89,7 @@ export default function ProjectsPage() {
                             onClick={() => setSelectedCategory('all')}
                             className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
                                 selectedCategory === 'all'
-                                    ? 'bg-blue-600 text-white'
+                                    ? 'bg-blue-500 text-white'
                                     : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                             }`}
                         >
@@ -107,7 +99,7 @@ export default function ProjectsPage() {
                             onClick={() => setSelectedCategory('personal-project')}
                             className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
                                 selectedCategory === 'personal-project'
-                                    ? 'bg-blue-600 text-white'
+                                    ? 'bg-blue-500 text-white'
                                     : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                             }`}
                         >
@@ -117,7 +109,7 @@ export default function ProjectsPage() {
                             onClick={() => setSelectedCategory('class-project')}
                             className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
                                 selectedCategory === 'class-project'
-                                    ? 'bg-blue-600 text-white'
+                                    ? 'bg-blue-500 text-white'
                                     : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                             }`}
                         >
@@ -127,7 +119,7 @@ export default function ProjectsPage() {
                             onClick={() => setSelectedCategory('hackathon')}
                             className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
                                 selectedCategory === 'hackathon'
-                                    ? 'bg-blue-600 text-white'
+                                    ? 'bg-blue-500 text-white'
                                     : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                             }`}
                         >
@@ -137,21 +129,27 @@ export default function ProjectsPage() {
                 </div>
 
                 <div className="space-y-8">
-                    {filteredProjects.map((project, index) => (
+                    {filteredProjects.map((project) => (
                         <ProjectCard key={project.id} project={project} />
                     ))}
                 </div>
 
-                {filteredProjects.length === 0 && (
+                {filteredProjects.length === 0 && !loading && (
                     <div className="text-center py-12">
                         <p className="text-gray-400 text-lg">
                             {searchQuery !== '' 
                                 ? `No projects found matching "${searchQuery}".`
                                 : selectedCategory === 'all' 
-                                    ? 'No featured projects found.' 
+                                    ? 'No projects found.' 
                                     : `No ${getCategoryDisplayName(selectedCategory).toLowerCase()} found.`
                             }
                         </p>
+                    </div>
+                )}
+
+                {loading && (
+                    <div className="text-center py-12">
+                        <p className="text-gray-400 text-lg">Loading...</p>
                     </div>
                 )}
             </div>

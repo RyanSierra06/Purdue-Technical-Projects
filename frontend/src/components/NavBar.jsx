@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Calendar, HelpCircle, Building2, Presentation, Code, Home, Menu, X } from 'lucide-react'
+import { Home, Menu, X, Users, Trophy, FolderOpen, Plus } from 'lucide-react'
 
 export default function NavBar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -29,30 +29,35 @@ export default function NavBar() {
                             className="w-10 h-10 object-contain"
                             draggable={false}
                         />
-                        <span className="font-bold text-white select-none text-lg">Purdue Technical Projects</span>
+                        <span className="font-bold text-white select-none text-xl lg:text-lg">Purdue Technical Projects</span>
                     </Link>
 
-                    <div className="hidden md:flex space-x-1">
+                    <div className="hidden lg:flex space-x-1">
                         <Link to="/" className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-lg font-medium transition-all duration-200 ${isActive('/') ? 'bg-blue-500 text-white shadow-lg' : 'bg-transparent text-gray-300 hover:bg-blue-500/30 hover:text-blue-300'}`}>
+                            <Home className="w-5 h-5" />
                             <span>Home</span>
                         </Link>
-                        <Link to="/Clubs" className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-lg font-medium transition-all duration-200 ${isActive('/Clubs') ? 'bg-blue-500 text-white shadow-lg' : 'bg-transparent text-gray-300 hover:bg-blue-500/30 hover:text-blue-300'}`}>
-                            <span>Clubs</span>
-                        </Link>
-                        <Link to="/Competitions" className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-lg font-medium transition-all duration-200 ${isActive('/Competitions') ? 'bg-blue-500 text-white shadow-lg' : 'bg-transparent text-gray-300 hover:bg-blue-500/30 hover:text-blue-300'}`}>
-                            <span>Competitions</span>
-                        </Link>
                         <Link to="/Projects" className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-lg font-medium transition-all duration-200 ${isActive('/Projects') ? 'bg-blue-500 text-white shadow-lg' : 'bg-transparent text-gray-300 hover:bg-blue-500/30 hover:text-blue-300'}`}>
+                            <FolderOpen className="w-5 h-5" />
                             <span>Projects</span>
                         </Link>
+                        <Link to="/Clubs" className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-lg font-medium transition-all duration-200 ${isActive('/Clubs') ? 'bg-blue-500 text-white shadow-lg' : 'bg-transparent text-gray-300 hover:bg-blue-500/30 hover:text-blue-300'}`}>
+                            <Users className="w-5 h-5" />
+                            <span>Clubs</span>
+                        </Link>
+                        <Link to="/Events" className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-lg font-medium transition-all duration-200 ${isActive('/Events') ? 'bg-blue-500 text-white shadow-lg' : 'bg-transparent text-gray-300 hover:bg-blue-500/30 hover:text-blue-300'}`}>
+                            <Trophy className="w-5 h-5" />
+                            <span>Events</span>
+                        </Link>
                         <Link to="/Submit" className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-lg font-medium transition-all duration-200 ${isActive('/Submit') ? 'bg-blue-500 text-white shadow-lg' : 'bg-transparent text-gray-300 hover:bg-blue-500/30 hover:text-blue-300'}`}>
+                            <Plus className="w-5 h-5" />
                             <span>Submit</span>
                         </Link>
                     </div>
 
                     <button
                         onClick={toggleMenu}
-                        className="md:hidden flex items-center p-2 rounded-lg text-gray-300 hover:bg-blue-500/20 hover:text-blue-400"
+                        className="lg:hidden flex items-center p-2 rounded-lg text-gray-300 hover:bg-blue-500/20 hover:text-blue-400"
                     >
                         {isMenuOpen ? (
                             <X className="w-6 h-6" />
@@ -63,21 +68,26 @@ export default function NavBar() {
                 </div>
 
                 {isMenuOpen && (
-                    <div className="md:hidden mt-4 pb-4 border-t border-gray-700">
+                    <div className="lg:hidden mt-4 pb-4 border-t border-gray-700">
                         <div className="flex flex-col space-y-2 pt-4">
                             <Link to="/" className={`flex items-center space-x-2 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${isActive('/') ? 'bg-blue-500 text-white shadow-lg' : 'bg-transparent text-gray-300 hover:bg-blue-500/30 hover:text-blue-300'}`} onClick={closeMenu}>
+                                <Home className="w-5 h-5" />
                                 <span>Home</span>
                             </Link>
-                            <Link to="/Clubs" className={`flex items-center space-x-2 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${isActive('/Clubs') ? 'bg-blue-500 text-white shadow-lg' : 'bg-transparent text-gray-300 hover:bg-blue-500/30 hover:text-blue-300'}`} onClick={closeMenu}>
-                                <span>Clubs</span>
-                            </Link>
-                            <Link to="/Competitions" className={`flex items-center space-x-2 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${isActive('/Competitions') ? 'bg-blue-500 text-white shadow-lg' : 'bg-transparent text-gray-300 hover:bg-blue-500/30 hover:text-blue-300'}`} onClick={closeMenu}>
-                                <span>Competitions</span>
-                            </Link>
                             <Link to="/Projects" className={`flex items-center space-x-2 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${isActive('/Projects') ? 'bg-blue-500 text-white shadow-lg' : 'bg-transparent text-gray-300 hover:bg-blue-500/30 hover:text-blue-300'}`} onClick={closeMenu}>
+                                <FolderOpen className="w-5 h-5" />
                                 <span>Projects</span>
                             </Link>
+                            <Link to="/Clubs" className={`flex items-center space-x-2 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${isActive('/Clubs') ? 'bg-blue-500 text-white shadow-lg' : 'bg-transparent text-gray-300 hover:bg-blue-500/30 hover:text-blue-300'}`} onClick={closeMenu}>
+                                <Users className="w-5 h-5" />
+                                <span>Clubs</span>
+                            </Link>
+                            <Link to="/Events" className={`flex items-center space-x-2 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${isActive('/Events') ? 'bg-blue-500 text-white shadow-lg' : 'bg-transparent text-gray-300 hover:bg-blue-500/30 hover:text-blue-300'}`} onClick={closeMenu}>
+                                <Trophy className="w-5 h-5" />
+                                <span>Events</span>
+                            </Link>
                             <Link to="/Submit" className={`flex items-center space-x-2 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${isActive('/Submit') ? 'bg-blue-500 text-white shadow-lg' : 'bg-transparent text-gray-300 hover:bg-blue-500/30 hover:text-blue-300'}`} onClick={closeMenu}>
+                                <Plus className="w-5 h-5" />
                                 <span>Submit</span>
                             </Link>
                         </div>

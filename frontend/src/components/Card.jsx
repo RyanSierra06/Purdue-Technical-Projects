@@ -1,7 +1,7 @@
 import React from 'react';
 import { ExternalLinkIcon } from 'lucide-react';
 
-export default function Card({ item, type = 'item' }) {
+export default function Card({ item }) {
     return (
         <div className="bg-black/40 rounded-lg p-6 border border-gray-700 hover:border-blue-500/50 transition-all duration-300">
             <div className="flex gap-6">
@@ -30,10 +30,10 @@ export default function Card({ item, type = 'item' }) {
                             href={item.links}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
+                            className="inline-flex items-center px-6 py-3 bg-black/60 hover:bg-black/80 border border-blue-500/30 hover:border-blue-400/60 text-blue-300 hover:text-blue-200 rounded-xl backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 group"
                         >
-                            Visit Website
-                            <ExternalLinkIcon className="w-4 h-4 ml-2" />
+                            <span className="font-medium">Visit Website</span>
+                            <ExternalLinkIcon className="w-4 h-4 ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
                         </a>
                     </div>
                 </div>

@@ -12,6 +12,14 @@ const WireMeshBackground = () => {
     const renderer = new THREE.WebGLRenderer({ antialias: true })
     renderer.setSize(window.innerWidth, window.innerHeight)
     renderer.setPixelRatio(window.devicePixelRatio)
+
+    renderer.domElement.style.width = `${window.innerWidth}px`
+    renderer.domElement.style.height = `${window.innerHeight}px`
+    renderer.domElement.style.display = 'block'
+    renderer.domElement.style.position = 'absolute'
+    renderer.domElement.style.top = '0'
+    renderer.domElement.style.left = '0'
+    
     mountRef.current.appendChild(renderer.domElement)
 
     const scene = new THREE.Scene()
@@ -66,7 +74,7 @@ const WireMeshBackground = () => {
     const animate = () => {
       requestAnimationFrame(animate)
 
-      grids.forEach((grid, index) => {
+      grids.forEach((grid) => {
         grid.position.y -= 0.03 // Move down slower
 
         if (grid.position.y < -gridHeight - 50) {
@@ -80,15 +88,28 @@ const WireMeshBackground = () => {
 
     animate()
 
+    let resizeTimeout
     const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight
-      camera.updateProjectionMatrix()
-      renderer.setSize(window.innerWidth, window.innerHeight)
+      clearTimeout(resizeTimeout)
+      resizeTimeout = setTimeout(() => {
+        const width = window.innerWidth
+        const height = window.innerHeight
+
+        camera.aspect = width / height
+        camera.updateProjectionMatrix()
+
+        renderer.setSize(width, height)
+
+        renderer.domElement.style.width = `${width}px`
+        renderer.domElement.style.height = `${height}px`
+        renderer.domElement.style.display = 'block'
+      }, 16)
     }
 
     window.addEventListener('resize', handleResize)
 
     return () => {
+      clearTimeout(resizeTimeout)
       window.removeEventListener('resize', handleResize)
       if (mountRef.current && renderer.domElement) {
         mountRef.current.removeChild(renderer.domElement)
@@ -108,7 +129,8 @@ const WireMeshBackground = () => {
         height: "100vh",
         zIndex: -1,
         pointerEvents: "none",
-        overflow: "hidden"
+        overflow: "hidden",
+        background: "#020208"
       }}
     />
   )
