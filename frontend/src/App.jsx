@@ -25,7 +25,7 @@ function AppRoutes() {
 
 export default function App() {
     return (
-        <BrowserRouter basename="/Purdue-Technical-Projects">
+        <BrowserRouter>
             <AppRoutes />
         </BrowserRouter>
     )

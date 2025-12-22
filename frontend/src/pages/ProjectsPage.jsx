@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { SearchIcon } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import ProjectCard from "../components/ProjectCard";
 
 import { getProjects } from "../services/api";
@@ -57,9 +58,19 @@ export default function ProjectsPage() {
 
 
     return (
-        <div className="min-h-screen pt-20">
+        <motion.div 
+            className="min-h-screen pt-20"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
+        >
             <div className="max-w-6xl mx-auto px-6 py-12">
-                <div className="text-center mb-8">
+                <motion.div 
+                    className="text-center mb-8"
+                    initial={{ opacity: 0, y: -30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
                     <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
                         Purdue <span className="text-blue-400">Student Projects</span>
                     </h1>
@@ -68,7 +79,12 @@ export default function ProjectsPage() {
                         From personal projects to hackathon winners!
                     </p>
                     
-                    <div className="max-w-lg mx-auto">
+                    <motion.div 
+                        className="max-w-lg mx-auto"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5, delay: 0.3 }}
+                    >
                         <div className="relative text-gray-300">
                             <SearchIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5" />
                             <input
@@ -76,17 +92,34 @@ export default function ProjectsPage() {
                                 placeholder="Search by tags or keywords..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-12 pr-4 py-4 bg-black/40 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500/50 backdrop-blur-sm"
+                                className="w-full pl-12 pr-4 py-4 bg-black/40 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500/50 backdrop-blur-sm transition-all duration-300"
                             />
                         </div>
-                    </div>
-                </div>
+                    </motion.div>
+                </motion.div>
 
-                <div className="mb-8">
-                    
+                <motion.div 
+                    className="mb-8"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                >
                     <div className="flex flex-wrap justify-center gap-4">
-                        <button
+                        <motion.button
                             onClick={() => setSelectedCategory('all')}
+                            whileHover={{ 
+                                scale: 1.05,
+                                transition: { duration: 0.15, ease: [0.4, 0, 0.2, 1] }
+                            }}
+                            whileTap={{ 
+                                scale: 0.95,
+                                transition: { duration: 0.1, ease: [0.4, 0, 0.2, 1] }
+                            }}
+                            transition={{ 
+                                duration: 0.1, 
+                                ease: [0.4, 0, 0.2, 1] 
+                            }}
+                            style={{ willChange: "transform" }}
                             className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
                                 selectedCategory === 'all'
                                     ? 'bg-blue-500 text-white'
@@ -94,9 +127,22 @@ export default function ProjectsPage() {
                             }`}
                         >
                             All Projects
-                        </button>
-                        <button
+                        </motion.button>
+                        <motion.button
                             onClick={() => setSelectedCategory('personal-project')}
+                            whileHover={{ 
+                                scale: 1.05,
+                                transition: { duration: 0.15, ease: [0.4, 0, 0.2, 1] }
+                            }}
+                            whileTap={{ 
+                                scale: 0.95,
+                                transition: { duration: 0.1, ease: [0.4, 0, 0.2, 1] }
+                            }}
+                            transition={{ 
+                                duration: 0.1, 
+                                ease: [0.4, 0, 0.2, 1] 
+                            }}
+                            style={{ willChange: "transform" }}
                             className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
                                 selectedCategory === 'personal-project'
                                     ? 'bg-blue-500 text-white'
@@ -104,9 +150,22 @@ export default function ProjectsPage() {
                             }`}
                         >
                             Personal Projects
-                        </button>
-                        <button
+                        </motion.button>
+                        <motion.button
                             onClick={() => setSelectedCategory('class-project')}
+                            whileHover={{ 
+                                scale: 1.05,
+                                transition: { duration: 0.15, ease: [0.4, 0, 0.2, 1] }
+                            }}
+                            whileTap={{ 
+                                scale: 0.95,
+                                transition: { duration: 0.1, ease: [0.4, 0, 0.2, 1] }
+                            }}
+                            transition={{ 
+                                duration: 0.1, 
+                                ease: [0.4, 0, 0.2, 1] 
+                            }}
+                            style={{ willChange: "transform" }}
                             className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
                                 selectedCategory === 'class-project'
                                     ? 'bg-blue-500 text-white'
@@ -114,9 +173,22 @@ export default function ProjectsPage() {
                             }`}
                         >
                             Class Projects
-                        </button>
-                        <button
+                        </motion.button>
+                        <motion.button
                             onClick={() => setSelectedCategory('hackathon')}
+                            whileHover={{ 
+                                scale: 1.05,
+                                transition: { duration: 0.15, ease: [0.4, 0, 0.2, 1] }
+                            }}
+                            whileTap={{ 
+                                scale: 0.95,
+                                transition: { duration: 0.1, ease: [0.4, 0, 0.2, 1] }
+                            }}
+                            transition={{ 
+                                duration: 0.1, 
+                                ease: [0.4, 0, 0.2, 1] 
+                            }}
+                            style={{ willChange: "transform" }}
                             className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
                                 selectedCategory === 'hackathon'
                                     ? 'bg-blue-500 text-white'
@@ -124,15 +196,36 @@ export default function ProjectsPage() {
                             }`}
                         >
                             Hackathons
-                        </button>
+                        </motion.button>
                     </div>
-                </div>
+                </motion.div>
 
-                <div className="space-y-8">
-                    {filteredProjects.map((project) => (
-                        <ProjectCard key={project.id} project={project} />
-                    ))}
-                </div>
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={`${selectedCategory}-${searchQuery}`}
+                        className="space-y-8"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                    >
+                        {filteredProjects.map((project, index) => (
+                            <motion.div
+                                key={project.id}
+                                initial={{ opacity: 0, y: 30, scale: 0.95, x: -20 }}
+                                animate={{ opacity: 1, y: 0, scale: 1, x: 0 }}
+                                transition={{ 
+                                    type: "tween",
+                                    duration: 0.4,
+                                    ease: [0.4, 0, 0.2, 1],
+                                    delay: Math.min(index * 0.08, 0.6)
+                                }}
+                            >
+                                <ProjectCard project={project} />
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                </AnimatePresence>
 
                 {filteredProjects.length === 0 && !loading && (
                     <div className="text-center py-12">
@@ -153,6 +246,6 @@ export default function ProjectsPage() {
                     </div>
                 )}
             </div>
-        </div>
+        </motion.div>
     );
 }

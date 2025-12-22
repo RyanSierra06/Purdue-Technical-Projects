@@ -1,9 +1,27 @@
 import React from 'react';
 import { ExternalLinkIcon } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function Card({ item }) {
     return (
-        <div className="bg-black/40 rounded-lg p-6 border border-gray-700 hover:border-blue-500/50 transition-all duration-300">
+        <motion.div 
+            className="bg-black/40 rounded-lg p-6 border border-gray-700 hover:border-blue-500/50 transition-all duration-300"
+            whileHover={{ 
+                y: -8,
+                scale: 1.01,
+                transition: {
+                    type: "tween",
+                    duration: 0.15,
+                    ease: [0.4, 0, 0.2, 1]
+                }
+            }}
+            transition={{ 
+                type: "tween",
+                duration: 0.1,
+                ease: [0.4, 0, 0.2, 1]
+            }}
+            style={{ willChange: "transform" }}
+        >
             <div className="flex gap-6">
                 <div className="flex-shrink-0">
                     <img
@@ -38,6 +56,6 @@ export default function Card({ item }) {
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 }

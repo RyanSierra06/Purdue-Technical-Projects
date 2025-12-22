@@ -3,25 +3,14 @@
   <head>
     <meta charset="utf-8">
     <title>Purdue Technical Projects</title>
+    <meta http-equiv="refresh" content="0; url=/">
     <script type="text/javascript">
-      // Custom SPA redirect for GitHub Pages with base path
-      // Redirects /Purdue-Technical-Projects/Projects to /Purdue-Technical-Projects/?/Projects
-      var l = window.location;
-      var basePath = '/Purdue-Technical-Projects';
-      
-      // Check if we're on a route that needs redirecting
-      if (l.pathname.startsWith(basePath + '/') && l.pathname !== basePath + '/') {
-        var route = l.pathname.substring(basePath.length + 1); // Remove base path + /
-        l.replace(
-          l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-          basePath + '/?/' + route +
-          (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-          l.hash
-        );
-      }
+      // Redirect to home page - Vercel rewrites will handle SPA routing
+      window.location.href = '/';
     </script>
   </head>
   <body>
+    <p>Redirecting to <a href="/">home page</a>...</p>
   </body>
 </html>
 

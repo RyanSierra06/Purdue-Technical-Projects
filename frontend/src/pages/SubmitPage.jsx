@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Upload, X, Plus, Link as LinkIcon } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function SubmitPage() {
     const [formData, setFormData] = useState({
@@ -160,9 +161,19 @@ export default function SubmitPage() {
     };
 
     return (
-        <div className="min-h-screen pt-20">
+        <motion.div 
+            className="min-h-screen pt-20"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
+        >
             <div className="max-w-4xl mx-auto px-6 py-12">
-                <div className="text-center mb-12">
+                <motion.div 
+                    className="text-center mb-12"
+                    initial={{ opacity: 0, y: -30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
                     <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
                         Submit Your <span className="text-blue-400">Project</span>
                     </h1>
@@ -170,9 +181,14 @@ export default function SubmitPage() {
                         Share your amazing project with the Purdue community! 
                         Fill out the form below to submit your project for review.
                     </p>
-                </div>
+                </motion.div>
 
-                <div className="bg-black/40 rounded-lg p-8 border border-gray-700">
+                <motion.div 
+                    className="bg-black/40 rounded-lg p-8 border border-gray-700"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                >
                     <form onSubmit={handleSubmit} className="space-y-8">
                         <div>
                             <label className="block text-white text-lg font-medium mb-3">
@@ -405,28 +421,41 @@ export default function SubmitPage() {
                             </div>
                         </div>
 
-                        <div className="pt-6">
-                            <button
+                        <motion.div className="pt-6">
+                            <motion.button
                                 type="submit"
                                 disabled={isSubmitting}
+                                whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+                                whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
                                 className="w-full px-8 py-4 bg-black/60 hover:bg-black/80 border border-blue-500/30 hover:border-blue-400/60 text-blue-300 hover:text-blue-200 text-lg font-medium rounded-xl backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-black/60 disabled:hover:border-blue-500/30 disabled:hover:text-blue-300 disabled:hover:shadow-none"
                             >
                                 {isSubmitting ? 'Submitting...' : 'Submit Project'}
-                            </button>
-                        </div>
+                            </motion.button>
+                        </motion.div>
 
-                        {submitMessage && (
-                            <div className={`p-4 rounded-lg ${
-                                submitMessage.includes('Error') 
-                                    ? 'bg-red-600/20 text-red-300 border border-red-600/30' 
-                                    : 'bg-green-600/20 text-green-300 border border-green-600/30'
-                            }`}>
-                                {submitMessage}
-                            </div>
-                        )}
+                        <AnimatePresence>
+                            {submitMessage && (
+                                <motion.div 
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    transition={{ 
+                                        duration: 0.15,
+                                        ease: [0.4, 0, 0.2, 1]
+                                    }}
+                                    className={`p-4 rounded-lg ${
+                                        submitMessage.includes('Error') 
+                                            ? 'bg-red-600/20 text-red-300 border border-red-600/30' 
+                                            : 'bg-green-600/20 text-green-300 border border-green-600/30'
+                                    }`}
+                                >
+                                    {submitMessage}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </form>
-                </div>
+                </motion.div>
             </div>
-        </div>
+        </motion.div>
     );
 }

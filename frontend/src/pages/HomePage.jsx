@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { ExternalLink, ChevronLeft, ChevronRight, Globe, Camera, Plus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import ProjectCard from '../components/ProjectCard';
 import { getProjects } from '../services/api';
 
@@ -12,7 +13,29 @@ export default function HomePage() {
     const lastClickTime = useRef(0);
 
     useEffect(() => {
+        // Scroll to top immediately on mount/refresh
+        // Use both methods to ensure it works reliably
         window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        
+        // Also ensure it happens after render to catch any late positioning
+        const timeout = setTimeout(() => {
+            window.scrollTo(0, 0);
+        }, 10);
+        
+        // Handle scroll restoration - prevent browser from restoring scroll on refresh
+        const originalScrollRestoration = history.scrollRestoration;
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        
+        return () => {
+            clearTimeout(timeout);
+            // Restore original scroll restoration behavior
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = originalScrollRestoration;
+            }
+        };
     }, []);
 
     useEffect(() => {
@@ -87,10 +110,25 @@ export default function HomePage() {
 
     return (
         <>
-        <div className="min-h-screen pt-16">
+        <motion.div 
+            className="min-h-screen pt-16"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
+        >
             <div className="max-w-6xl mx-auto px-6 py-20">
-                <div className="text-center mb-16">
-                    <div className="flex items-center justify-center mb-8">
+                <motion.div 
+                    className="text-center mb-16"
+                    initial={{ opacity: 0, y: -30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0 }}
+                >
+                    <motion.div 
+                        className="flex items-center justify-center mb-8"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5, delay: 0.1 }}
+                    >
                         <img 
                             src={`${import.meta.env.BASE_URL}PTP-Logo.png`}
                             alt="Purdue Technical Projects Logo" 
@@ -99,33 +137,53 @@ export default function HomePage() {
                         <h1 className="text-5xl md:text-7xl font-bold text-white">
                             Purdue <span className="text-blue-400">Technical Projects</span>
                         </h1>
-                    </div>
-                    <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-8">
+                    </motion.div>
+                    <motion.p 
+                        className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-8"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                    >
                         From innovative personal creations, to award-winning hackathon entries, dive into a showcase of what makes Purdue CS great.
                         Get inspired, submit your own projects, and explore the creativity and technical excellence of the Purdue community.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <a 
-                            href="/Purdue-Technical-Projects/Projects"
+                    </motion.p>
+                    <motion.div 
+                        className="flex flex-col sm:flex-row gap-4 justify-center"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.3 }}
+                    >
+                        <Link 
+                            to="/Projects"
                             className="px-8 py-4 bg-black/60 hover:bg-black/80 border border-blue-500/30 hover:border-blue-400/60 text-blue-300 hover:text-blue-200 text-lg font-medium rounded-xl backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 inline-flex items-center justify-center group"
                         >
                             Explore Projects
                             <ExternalLink className="w-5 h-5 ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
-                        </a>
-                        <a
-                            href="Purdue-Technical-Projects//Submit"
+                        </Link>
+                        <Link
+                            to="/Submit"
                             className="px-8 py-4 bg-transparent border-2 border-blue-500/30 hover:border-blue-400/60 text-blue-300 hover:text-blue-200 text-lg font-medium rounded-xl backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 inline-flex items-center justify-center group"
                         >
                             <Plus className="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform duration-200" />
                             <span>Submit Your Project</span>
-                        </a>
-                    </div>
-                </div>
+                        </Link>
+                    </motion.div>
+                </motion.div>
 
-                <div className="mb-20">
-                    <h2 className="text-4xl font-bold text-white text-center mb-12">
+                <motion.div 
+                    className="mb-20"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.4, delay: 0.4 }}
+                >
+                    <motion.h2 
+                        className="text-4xl font-bold text-white text-center mb-12"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.5 }}
+                    >
                         Featured Projects
-                    </h2>
+                    </motion.h2>
                     {loading ? (
                         <div className="text-center py-12">
                             <div className="text-white text-xl">Loading projects...</div>
@@ -153,8 +211,8 @@ export default function HomePage() {
                                             animate={{ opacity: 1, x: 0 }}
                                             exit={{ opacity: 0, x: -50 }}
                                             transition={{ 
-                                                duration: 0.3,
-                                                ease: "easeInOut"
+                                                duration: 0.4,
+                                                ease: [0.4, 0, 0.2, 1]
                                             }}
                                         >
                                             <ProjectCard project={featuredProjects[currentProjectIndex]} />
@@ -194,59 +252,17 @@ export default function HomePage() {
                             <p className="text-gray-400 text-lg">No featured projects available.</p>
                         </div>
                     )}
-                </div>
-
-                <div className="mb-4 bg-black/40 rounded-lg p-8 border border-gray-700 hover:border-blue-500/50 transition-all duration-300">
-                    <h2 className="text-4xl font-bold text-white text-center mb-12">
-                        Our Goals
-                    </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <div className="text-center group">
-                            <div className="w-20 h-20 bg-blue-500/20 border-2 border-blue-500/60 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span className="text-2xl font-bold text-blue-300">1</span>
-                            </div>
-                            <h3 className="text-lg font-semibold text-white mb-2">Browse & Discover</h3>
-                            <p className="text-gray-300 text-base">
-                                Explore a comprehensive showcase of technical projects created by Purdue students.
-                            </p>
-                        </div>
-
-                        <div className="text-center group">
-                            <div className="w-20 h-20 bg-blue-500/20 border-2 border-blue-500/60 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span className="text-2xl font-bold text-blue-300">2</span>
-                            </div>
-                            <h3 className="text-lg font-semibold text-white mb-2">Get Inspired</h3>
-                            <p className="text-gray-300 text-base">
-                                Find inspiration from innovative developers and connect with the talented Purdue community.
-                            </p>
-                        </div>
-
-                        <div className="text-center group">
-                            <div className="w-20 h-20 bg-blue-500/20 border-2 border-blue-500/60 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span className="text-2xl font-bold text-blue-300">3</span>
-                            </div>
-                            <h3 className="text-lg font-semibold text-white mb-2">Create & Build</h3>
-                            <p className="text-gray-300 text-base">
-                                Join clubs and participate in events to build your own technical projects.
-                            </p>
-                        </div>
-
-                        <div className="text-center group">
-                            <div className="w-20 h-20 bg-blue-500/20 border-2 border-blue-500/60 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span className="text-2xl font-bold text-blue-300">4</span>
-                            </div>
-                            <h3 className="text-lg font-semibold text-white mb-2">Share & Connect</h3>
-                            <p className="text-gray-300 text-base">
-                                Submit your technical projects to showcase your work and inspire fellow students.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
+                </motion.div>
             </div>
-        </div>
+        </motion.div>
 
-        <footer className="bg-black/40 border-t border-gray-700/50">
+        <motion.footer 
+            className="bg-black/40 border-t border-gray-700/50"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+        >
             <div className="max-w-7xl mx-auto px-6 py-12">
                 <div className="text-center">
                     <h2 className="text-3xl font-bold text-white mb-4">
@@ -277,7 +293,7 @@ export default function HomePage() {
                     </div>
                 </div>
             </div>
-        </footer>
+        </motion.footer>
         </>
     );
 }
